@@ -3,7 +3,7 @@ export function getVisibleChunkTiles(layer, offset) {
   const tileOffset = Math.floor(offset / 16);
   const chunkOffset = Math.floor(tileOffset / 16);
 
-  console.debug(`Pixel: ${offset % 16} | Tile: ${tileOffset} | Chunk: ${chunkOffset}`);
+  //console.debug(`Pixel: ${offset % 16} | Tile: ${tileOffset} | Chunk: ${chunkOffset}`);
 
   if (chunkOffset >= chunks.length) {
     return []; // Return an empty array if the chunkOffset is out of bounds
