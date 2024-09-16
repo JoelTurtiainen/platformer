@@ -7,10 +7,11 @@ import testMap from './maps/test.json' with { type: 'json' };
 const myGameArea = {
   canvas: document.createElement('canvas'),
 
-  async start() {
+  start() {
     // Init Canvas
-    this.canvas.width = 512;
-    this.canvas.height = 512;
+    this.tileScale = 3;
+    this.canvas.width = 256 * this.tileScale - 16;
+    this.canvas.height = 256 * this.tileScale;
     this.canvas.style = 'border: 1px solid #000000';
     this.canvas.style.cursor = 'none'; //hide the original cursor
     this.ctx = this.canvas.getContext('2d');
@@ -18,7 +19,6 @@ const myGameArea = {
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
     // Initialize Atlases 
-    this.tileScale = 2;
     this.atlases = createAtlases(testMap, this.tileScale);
 
     // Initialize everything else
