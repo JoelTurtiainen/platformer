@@ -1,0 +1,5 @@
+Layer drawing is expanded from this example:
+https://medium.com/geekculture/make-your-own-tile-map-with-vanilla-javascript-a627de67b7d9
+
+Current sprites:
+https://brackeysgames.itch.io/brackeys-platformer-bundle
