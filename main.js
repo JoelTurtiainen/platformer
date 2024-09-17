@@ -1,38 +1,60 @@
-import { createAtlases } from '../components/world/atlas.js';
 import testMap from '../maps/test.json' with { type: 'json' };
 import { canvasConfig, playerConfig, enemiesConfig } from '../components/config.js';
-import { updateGameArea } from '../components/update.js';
-import { initCanvas, setupEventListeners, initPlayer, initEnemies } from '../components/setup.js';
+import { drawNextTiles } from './components/world/worldCore.js';
+import { initializeCanvas, initializeEntities, initializeGameProperties, setupEventListeners, setupGameAreaMethods } from './components/init.js';
 
 const myGameArea = {
   start() {
-    // Init Canvas
-    const { canvas, ctx } = initCanvas(canvasConfig);
-    this.canvas = canvas;
-    this.ctx = ctx;
-		this.map = testMap
+		console.log(`Initializing`);
+		const { canvas, ctx, scale } = initializeCanvas(canvasConfig);
+		this.canvas = canvas;
+		this.ctx = ctx;
+		
+		setupEventListeners(this);
+		initializeGameProperties(this, testMap, scale);
+		initializeEntities(this, playerConfig, enemiesConfig, canvas);
+		setupGameAreaMethods(this, ctx, canvas);
 
-    // Initialize Atlases 
-    this.atlases = createAtlases(testMap, 3);
+		console.log(`Initializing finished`);
 
-    // Initialize everything else
-    this.cameraOffset = 0;
-    this.frameNo = 0;
-
-    // Init player
-    this.player = initPlayer(playerConfig, this.canvas);
-    
-    // Init enemies
-    this.enemies = initEnemies(enemiesConfig, this.canvas);
-
-    setupEventListeners(this);
-
-    this.clear = () => this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.stop = () => cancelAnimationFrame(this.animationFrameID);
-
-    this.updateGameArea = () => updateGameArea(this);
-    this.animationFrameID = requestAnimationFrame(() => updateGameArea(this));
+		this.frameNo = requestAnimationFrame(() => this.update());
   },
-};
+	handleInput() {
+		if (!this.keys) return;
+
+		if (this.keys['a']) {
+			this.player.moveLeft();
+		}
+		
+		if (this.keys['d']) {
+			if (this.player.x > this.canvas.width / 2) {
+				this.offset += playerConfig.speed;
+			} else {
+				this.player.moveRight();
+			}
+		}
+		
+	},
+	update() {
+		this.clear();
+
+		this.handleInput()
+
+		drawNextTiles(this);
+
+		// Update and draw all enemies
+    this.enemies.forEach((enemy) => {
+      enemy.move();
+      enemy.draw(this.ctx);
+    });
+
+		// Update and draw the player
+    this.player.dropDown();
+    this.player.draw(this.ctx);
+
+		// Request the next frame
+		this.frameNo = requestAnimationFrame(() => this.update());
+	}
+}
 
 myGameArea.start();

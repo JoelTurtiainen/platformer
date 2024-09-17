@@ -31,18 +31,19 @@ export class Enemy extends Sprite {
 }
 
 export class Player extends Sprite {
-	constructor(x, y, width, height, color, canvas) {
+	constructor(x, y, width, height, speed, color, canvas) {
 		super(x, y, width, height, color);
+		this.speed = speed;
 		this.velocity = { x: 0, y: 1 };
 		this.canvas = canvas;
 	}
 
 	moveLeft() {
-		this.x -= 1;
+		this.x -= this.speed;
 	}
 
 	moveRight() {
-		this.x += 1;
+		this.x += this.speed;
 	}
 
 	jump() {
@@ -59,11 +60,11 @@ export class Player extends Sprite {
 	}
 }
 
-const keys = {
-	d: {
-		pressed: false,
-	},
-	a: {
-		pressed: false,
-	},
-};
+// const keys = {
+// 	d: {
+// 		pressed: false,
+// 	},
+// 	a: {
+// 		pressed: false,
+// 	},
+// };

@@ -1,9 +1,4 @@
-export function createAtlases(map, tileScale) {
-	console.debug('Generating atlases:');
-	return map.tilesets.map((tileset) => new TileAtlas(tileset, tileScale));
-}
-
-class TileAtlas {
+export class TileAtlas {
 	constructor(tileset, tileScale) {
 		this.atlas = new Image();
 		this.atlas.src = `./varastetut_spritet/${tileset.name}.png`;
@@ -15,7 +10,7 @@ class TileAtlas {
 		this.firstgid = tileset.firstgid;
 		this.lastgid = this.firstgid + tileset.tilecount;
 
-		console.debug(`...${tileset.name}`);
+		console.debug(`- ${tileset.name}`);
 	}
 
 	// load() {
